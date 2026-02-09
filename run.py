@@ -18,8 +18,12 @@ def create_grid(size):
 
 
 def display_grid(grid):
-    for row in grid:
-        print(" ".join(row))
+    size = len(grid)
+    header = "  " + " ".join(str(i) for i in range(size))
+    print(header)
+
+    for index, row in enumerate(grid):
+        print(f"{index} " + " ".join(row))
 
 
 def place_ship(grid_size):
@@ -35,10 +39,14 @@ def place_ship(grid_size):
 
 
 def get_player_guess(grid_size, previous_guesses):
+    """
+    Get a valid guess from the player.
+    Ensures the guess is within bounds and not repeated.
+    """
     while True:
         try:
-            row = int(input("Guess row: "))
-            col = int(input("Guess column: "))
+            row = int(input("Enter row number: "))
+            col = int(input("Enter column number: "))
 
             if row < 0 or row >= grid_size or col < 0 or col >= grid_size:
                 print("That guess is off the grid.")
@@ -46,8 +54,10 @@ def get_player_guess(grid_size, previous_guesses):
                 print("You already guessed that location.")
             else:
                 return (row, col)
+
         except ValueError:
             print("Please enter valid numbers.")
+
 
 
 def check_hit(guess, ship_positions):
@@ -64,16 +74,22 @@ def update_grid(grid, guess, hit):
 
 def display_result(hit):
     if hit:
-        print(" Hit!")
+        print("Direct hit!")
     else:
-        print("Miss.")
+        print("Missed! Nothing there.")
+
 
 def is_ship_sunk(ship_positions, hits):
     return len(hits) == len(ship_positions)
 
 
 def main():
-    print("Welcome to Battleships!")
+    """
+    Main game loop for Battleships.
+    """
+    print("🚢 Welcome to Battleships!")
+    print("Try to sink the computer's ship.")
+    print("Enter coordinates using numbers starting from 0.\n")
 
     grid_size = get_grid_size()
     grid = create_grid(grid_size)
@@ -96,9 +112,10 @@ def main():
             ship_hits.append(guess)
 
         if is_ship_sunk(ship, ship_hits):
-            print("🎉 You sank the battleship! You win!")
+            print("\n🎉 You sank the battleship! You win!")
             display_grid(grid)
             break
+
 
 
 if __name__ == "__main__":
