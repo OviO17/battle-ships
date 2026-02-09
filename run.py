@@ -68,6 +68,9 @@ def display_result(hit):
     else:
         print("Miss.")
 
+def is_ship_sunk(ship_positions, hits):
+    return len(hits) == len(ship_positions)
+
 
 def main():
     print("Welcome to Battleships!")
@@ -77,15 +80,25 @@ def main():
 
     ship = place_ship(grid_size)
     player_guesses = []
+    ship_hits = []
 
-    guess = get_player_guess(grid_size, player_guesses)
-    player_guesses.append(guess)
+    while True:
+        display_grid(grid)
 
-    hit = check_hit(guess, ship)
-    update_grid(grid, guess, hit)
-    display_result(hit)
+        guess = get_player_guess(grid_size, player_guesses)
+        player_guesses.append(guess)
 
-    display_grid(grid)
+        hit = check_hit(guess, ship)
+        update_grid(grid, guess, hit)
+        display_result(hit)
+
+        if hit:
+            ship_hits.append(guess)
+
+        if is_ship_sunk(ship, ship_hits):
+            print("🎉 You sank the battleship! You win!")
+            display_grid(grid)
+            break
 
 
 if __name__ == "__main__":
