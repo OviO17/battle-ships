@@ -21,6 +21,7 @@ def display_grid(grid):
     for row in grid:
         print(" ".join(row))
 
+
 def place_ship(grid_size):
     row = random.randint(0, grid_size - 1)
     col = random.randint(0, grid_size - 2)
@@ -33,19 +34,59 @@ def place_ship(grid_size):
     return ship_positions
 
 
+def get_player_guess(grid_size, previous_guesses):
+    while True:
+        try:
+            row = int(input("Guess row: "))
+            col = int(input("Guess column: "))
+
+            if row < 0 or row >= grid_size or col < 0 or col >= grid_size:
+                print("That guess is off the grid.")
+            elif (row, col) in previous_guesses:
+                print("You already guessed that location.")
+            else:
+                return (row, col)
+        except ValueError:
+            print("Please enter valid numbers.")
+
+
+def check_hit(guess, ship_positions):
+    return guess in ship_positions
+
+
+def update_grid(grid, guess, hit):
+    row, col = guess
+    if hit:
+        grid[row][col] = "X"
+    else:
+        grid[row][col] = "O"
+
+
+def display_result(hit):
+    if hit:
+        print(" Hit!")
+    else:
+        print("Miss.")
+
+
 def main():
     print("Welcome to Battleships!")
+
     grid_size = get_grid_size()
     grid = create_grid(grid_size)
 
     ship = place_ship(grid_size)
+    player_guesses = []
 
-    print("DEBUG ship location:", ship)  # 👈 TEMPORARY
+    guess = get_player_guess(grid_size, player_guesses)
+    player_guesses.append(guess)
+
+    hit = check_hit(guess, ship)
+    update_grid(grid, guess, hit)
+    display_result(hit)
 
     display_grid(grid)
 
 
-
 if __name__ == "__main__":
     main()
-
