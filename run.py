@@ -87,7 +87,7 @@ def main():
     """
     Main game loop for Battleships.
     """
-    print("🚢 Welcome to Battleships!")
+    print("Welcome to Battleships!")
     print("Try to sink the computer's ship.")
     print("Enter coordinates using numbers starting from 0.\n")
 
@@ -97,12 +97,16 @@ def main():
     ship = place_ship(grid_size)
     player_guesses = []
     ship_hits = []
+    turn_count = 0
 
     while True:
         display_grid(grid)
 
         guess = get_player_guess(grid_size, player_guesses)
         player_guesses.append(guess)
+        turn_count += 1
+
+        print(f"\nTurn {turn_count}")
 
         hit = check_hit(guess, ship)
         update_grid(grid, guess, hit)
@@ -112,11 +116,9 @@ def main():
             ship_hits.append(guess)
 
         if is_ship_sunk(ship, ship_hits):
-            print("\n🎉 You sank the battleship! You win!")
+            print(f"\nYou sank the battleship! You win in {turn_count} turns!")
             display_grid(grid)
             break
-
-
 
 if __name__ == "__main__":
     main()
