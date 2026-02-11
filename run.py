@@ -12,6 +12,13 @@ def get_grid_size():
         except ValueError:
             print("Please enter a valid number.")
 
+ data_str = input("Enter your data here:\n")
+
+        sales_data = data_str.split(",")
+
+        if validate_data(sales_data):
+            print("Data is valid!")
+            break
 
 def create_grid(size):
     return [["~" for _ in range(size)] for _ in range(size)]
